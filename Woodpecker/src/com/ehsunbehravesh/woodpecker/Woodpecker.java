@@ -13,6 +13,9 @@ import javax.mail.internet.MimeMessage;
 
 public class Woodpecker {
 
+  //<editor-fold defaultstate="collapsed" desc="CONSTANTS">
+  public static final double VERSION = 1.0;
+  //</editor-fold>
   //<editor-fold defaultstate="collapsed" desc="FIELDS">
   private static String smtpServer;
   private static String port;
@@ -72,7 +75,7 @@ public class Woodpecker {
     props.put("mail.smtp.port", port);
 
     Authenticator authenticator = new Authenticator(u, p);
-    Session session;    
+    Session session;
     session = Session.getDefaultInstance(props, authenticator);
 
     MimeMessage message = new MimeMessage(session);
@@ -83,7 +86,7 @@ public class Woodpecker {
     message.setText(messageContent);
 
     System.out.println("Start sending at: " + new Date());
-    Transport.send(message);    
+    Transport.send(message);
     System.out.println("Sent successfully at: " + new Date());
   }
 
@@ -114,8 +117,14 @@ public class Woodpecker {
   //</editor-fold>
 
   public static void main(String[] args) {
-    if (args.length != 8) {
+    if (args.length != 8 && args.length != 1) {
       showUsage();
+    } else if (args.length == 1) {
+      if (args[0].trim().equalsIgnoreCase("-version") || (args[0].trim().equalsIgnoreCase("--version") || args[0].trim().equalsIgnoreCase("-v"))) {
+        System.out.println("version " + VERSION);
+      } else {
+        showUsage();
+      }
     } else {
       String allArgs = concatArgs(args);
       try {
@@ -136,5 +145,5 @@ public class Woodpecker {
         showUsage();
       }
     }
-  }    
+  }
 }
